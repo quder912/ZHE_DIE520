@@ -1,0 +1,52 @@
+实现状态
+========
+
+更新日期：2026-05-21
+
+已完成：
+--------
+01. 读取并分析 zd_doc 中 PDF 文档
+    - a6bm-m01-block-modbus.pdf（Modbus 寄存器映射）
+    - a6_io-interface_modbus_block_function_v11_161221_c.pdf（I/O 和 Block 功能）
+    - a6bm-i01-block-if.pdf（Block I/F 启动说明）
+02. 创建工程目录 servo_host/ 及子目录
+03. 创建 record_text/ 记录文件夹（本文档所在目录）
+
+已构思但代码未创建：
+-------------------
+01. Modbus 协议栈
+    - CRC16 查表法实现
+    - Modbus 帧组帧/解析
+    - ModbusMaster 主站类
+
+02. 松下 A6 驱动层
+    - 寄存器地址映射
+    - Drive 控制 API
+    - Block 动作编辑器
+
+03. PyQt5 UI
+    - 主窗口
+    - 串口配置面板
+    - 控制面板
+    - 状态监控面板
+    - 参数面板
+    - Block 编辑面板
+
+04. 程序入口 main.py
+
+待办（按优先级排序）：
+-----------------------
+1. 创建 CRC16 查表法实现
+2. 创建 Modbus 帧组帧/解析
+3. 创建 ModbusMaster 主站类
+4. 创建寄存器地址常量定义
+5. 创建 Drive 控制 API
+6. 创建 Block 动作编辑器
+7. 创建 PyQt5 UI 各面板
+8. 创建 main.py 程序入口
+9. 测试与验证
+
+注意：
+- 所有代码需要用户确认后才会创建
+- 上位机开发需要实际硬件连接才能测试通信功能
+- 使用前需确认驱动器的 Pr6.28=1（启用 Modbus 通信）

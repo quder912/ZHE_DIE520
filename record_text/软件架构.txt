@@ -1,0 +1,83 @@
+软件架构
+========
+
+1. 工程目录结构
+
+   D:\works\ZHE_DIE\servo_host\
+   ├── main.py                    # 程序入口
+   ├── requirements.txt           # 依赖
+   │
+   ├── modbus/                    # Modbus RTU 主站协议栈
+   │   ├── __init__.py
+   │   ├── crc16.py               # CRC16 查表法计算
+   │   ├── frame.py               # Modbus 帧组帧/解析
+   │   └── master.py              # ModbusMaster 主站类
+   │
+   ├── panasonic/                 # 松下 A6 驱动器驱动层
+   │   ├── __init__.py
+   │   ├── registers.py           # 寄存器地址常量定义
+   │   ├── drive.py               # Drive 控制高层 API
+   │   └── block.py               # Block 动作编辑器
+   │
+   └── ui/                        # PyQt5 图形界面
+       ├── __init__.py
+       ├── app.py                 # 主窗口
+       ├── serial_widget.py       # 串口配置面板
+       ├── control_panel.py       # 控制面板
+       ├── monitor_panel.py       # 状态监控面板
+       ├── params_panel.py        # 参数面板
+       └── block_panel.py         # Block 编辑面板
+
+2. 模块职责
+
+   modbus/crc16.py
+   - CRC16-IBM 查表法计算
+   - 输入 bytes，输出 int
+
+   modbus/frame.py
+   - ModbusFrame 类：负责组帧和解析
+   - build_request(unit_id, func_code, address, value/quantity, values)
+   - parse_response(data) → dict
+   - 支持功能码：0x01, 0x03, 0x05, 0x06, 0x10
+   - 异常响应解析（最高位为 1 时，提取异常码）
+
+   modbus/master.py
+   - ModbusMaster 类：线程安全的串口通信管理
+   - connect() / disconnect() / reconnect()
+   - read_holding_registers(address, count)
+   - write_single_register(address, value)
+   - write_multiple_registers(address, values)
+   - write_single_coil(address, value)
+   - read_coils(address, count)
+   - 内部 _transceive() 方法带锁保护
+
+   panasonic/registers.py
+   - 定义驱动器参数和寄存器的常量映射
+   - Pr 参数地址计算
+
+   panasonic/drive.py
+   - Drive 类：高层控制 API
+   - servo_on() / servo_off()
+   - jog_start(direction, speed) / jog_stop()
+   - move_absolute(position) / move_relative(distance)
+   - read_position() / read_speed() / read_torque()
+   - read_alarm()
+   - set_parameter(pr_no, value) / get_parameter(pr_no)
+
+   panasonic/block.py
+   - BlockMotion 类：Block 动作编辑与管理
+   - create_block(type, params)
+   - set_block_no(index)
+   - start_block()
+   - stop_block()
+
+3. 设计决策
+
+   - 使用查表法 CRC16 而非逐位计算：速度更快
+   - ModbusMaster 内部使用 threading.Lock 保证线程安全
+   - 串口参数：8N1 或 8E1（适配 Pr5.03 设定）
+   - 异步刷新采用 QTimer（UI 层面，不在协议栈中）
+
+4. 依赖
+   - pyserial (>=3.5)
+   - PyQt5 (>=5.15)

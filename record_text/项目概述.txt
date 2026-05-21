@@ -1,0 +1,29 @@
+项目概述
+========
+
+1. 目标
+   开发一个上位机（Host Computer / PC 软件），通过 Modbus RTU 协议控制松下 MINAS A6 系列伺服系统。
+
+2. 硬件型号
+   - 电机：MSMF022L1U2M
+     - 200W 伺服电机
+   - 驱动器：MADLT15SF
+     - MINAS A6 多功能型伺服驱动器
+     - 支持 Modbus RTU 通信（通过 RS-485）
+     - 支持位置控制、速度控制、转矩控制
+     - 支持 Block 动作（内部指令序列）
+
+3. 通信接口
+   - 物理层：RS-485（通过驱动器的 X2 通信端口）
+   - 协议层：Modbus RTU
+   - PC 侧：USB 转 RS-485 转换器（推荐 FTDI 芯片方案）
+
+4. 项目根目录
+   D:\works\ZHE_DIE\servo_host\
+
+5. 技术文档来源
+   D:\works\ZHE_DIE\zd_doc\ 下的 PDF 文件：
+   - a6bm-m01-block-modbus.pdf     — Modbus 通信协议规范（寄存器映射）
+   - a6_io-interface_modbus_block_function_v11_161221_c.pdf  — I/O 接口和 Block 功能
+   - a6bm-i01-block-if.pdf         — Block I/F 启动说明
+   - ime88_minas-a6_manu_c (2).pdf — 主手册（71.8MB，未完全提取）
