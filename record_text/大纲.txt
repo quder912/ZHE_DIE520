@@ -12,3 +12,7 @@ record_text 文件夹索引
 5. Block动作说明.txt      — Block动作概念、动作类型、迁移条件、条件分歧
 6. 软件架构.txt          — 工程目录结构、模块职责、设计决策
 7. 实现状态.txt          — 已完成/进行中/待办任务清单
+8. doc_index.md          — zd_doc PDF 文档索引和关键寄存器速查
+9. modbus_指令表.md      — 完整 Modbus 功能码 + 地址 + 示例帧
+10. vofa_指令速查表.md   — VOFA+ HEX 模式直接可用的指令（已含 CRC）
+11. 前面板配置X2通讯.md  — 首次配置驱动器必读：5 个 Pr 参数设置

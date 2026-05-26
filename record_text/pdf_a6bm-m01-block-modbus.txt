@@ -1,0 +1,917 @@
+=== Modbus寄存器映射 ===
+页数: 55
+
+Modbus启动
+Block 动作应用说明资料A6BM-M01
+
+2
+珠海松下马达有限公司
+目录Block动作功能简述Block动作的概念…………………………………………………………………………………………P3Block动
+
+3
+珠海松下马达有限公司
+Block动作功能简述block动作中可通过256条命令的编写进行定位动作。除了相对定位、绝对定
+Block动作的概念
+Block动作的启动方法可从Modbus通信或者I/F连接器的输入信号中选择。（本文档只介绍通
+Block动作的设定方法①伺服调试软件（Panaterm）②通过Modbus通信写入寄存器（本文
+启用Block动作的步骤①连接器X4配线、参数编辑②开启伺服使能③指定Block编号④开启S
+
+4
+珠海松下马达有限公司
+连接器X2的配线(Modbus通信时使用)RS485的使用方式RS485，RS232
+
+5
+珠海松下马达有限公司
+连接器X4的配线有必要时，请对X4口进行配线(如需要使用到HOME、NOT、POT等功能
+
+6
+珠海松下马达有限公司
+连接器X4的配线输出信号
+(共通
+)及其功能通用输出能够分配的功能模拟信号
+(共通
+)及其功能其他
+
+7
+珠海松下马达有限公司
+连接器X4的配线相关引脚的说明POT：用于接入正方向限位，限制电机动作范围NOT：用于接入
+
+8
+珠海松下马达有限公司
+连接器X4的配线通过调试软件直接更改引脚定义的方法①在PC安装调试软件，软件下载链接：h
+
+9
+珠海松下马达有限公司
+连接器X4的配线根据说明书Pr4.00~4.10的介绍，可通过调试软件更改参数或者前面板更改参数从而更改引脚定义。确定需
+
+10
+珠海松下马达有限公司
+驱动器参数设定No参数名称设置范围功能/内容设置详情Pr0.01控制模式设定0~6Block motion仅对应位置控制模式需设定用户参
+
+11
+珠海松下马达有限公司
+Block动作的指令编辑Block动作编辑器的使用说明在电机动作前，需要用户事先编辑Block动
+
+12
+珠海松下马达有限公司
+Block动作的指令编辑Block动作编辑器的指令说明No 指令名称设定详情1迁移条件【0】&
+
+13
+珠海松下马达有限公司
+Block动作的指令编辑Block动作编辑器的指令说明No指令名称设定详情6减速停止停止方式：【
+
+14
+珠海松下马达有限公司
+Block动作的指令编辑Block动作编辑器的指令说明【11  条件分歧】比较对象选择“7”
+
+15
+珠海松下马达有限公司
+Modbus指令说明No参数名称设置范围功能/内容设置详情60.00~60.47速度/加速度/减速度0
+
+16
+珠海松下马达有限公司
+Modbus指令说明Modbus指令１．写入线圈（输入）（05h命令）３．写入寄存
+⇒STB_ON⇒位置定位动作。※原点复位的点NO在原点复位设定后的使用。【
+追加说明】伺服参数使用
+2个寄存器，写入伺服参数时请不要使用“
+06h”而使用“多个寄存器写入：
+10h”
+
+17
+珠海松下马达有限公司
+Modbus指令说明01 －轴地址05 －线圈写入命令0060 －指定线圈地址为0060h
+⇒SRV-ON0000 －将0000h写入线圈即SRV-ON为OFFCD －CRC_LO
+⇒SRV-ON ONFF00 －将FF00h写入线
+⇒Block开始编号0000 －将0000h写入寄存
+⇒SRV-ONFF00 －将0000h写入线圈即SRV-ON为OFF8D －CRC_LO
+
+18
+珠海松下马达有限公司
+Modbus指令说明01 －轴地址05 －线圈写入命令0120 －线圈地址为0120h
+⇒STB0000 －将0000h写入线圈即STB为OFF CD －CRC_LOWFC －CRC_HIG
+⇒STB FF00 －将FF00h写入线圈即ST
+⇒编码器单圈数据00 03 －连续读取3个寄存器b0 －CRC_LOW73 －CRC_HIGH
+
+19
+珠海松下马达有限公司
+启动Block动作启动Block动作首先需确认：①连接器X2配线完成②需要使用的连接器X4引
+
+20
+珠海松下马达有限公司
+Block动作示例例1  block No.0相对定位动作内容：进行定点动作。例：10000脉冲的
+・旋转设备角度的固定尺寸输送门及快门等的开关动作设定方法：0相对定位，速度编号：V0，加速设定编
+
+21
+珠海松下马达有限公司
+Block动作示例例2  block No.0～４相对定位（绝对值定位也一样）连续3个bloc
+⇒100ms停止
+⇒10000脉冲动作
+⇒200ms停止
+⇒-20000脉冲动作
+⇒停止应用例：用选别机等进行一系列弹出动作、放置加工品的一系列动作设定
+0
+1
+2
+3
+4
+停止
+
+22
+珠海松下马达有限公司
+Block动作示例例2  block No.0～４相对定位（绝对值定位也一样）连续3个block动作
+0
+1
+2
+停止往返动作的情况下，如停止时间不充分，会有动作不完结的情况
+
+23
+珠海松下马达有限公司
+Block动作示例例3  block No.0～６相对定位（绝对值定位也一样）连续block动作
+⇒100ms停止
+⇒10000脉冲动作
+⇒200ms停止
+⇒-20000脉冲动作
+⇒500ms停止
+⇒跳到block No.０停止需要输入减速停止（block动作终止）。
+
+24
+珠海松下马达有限公司
+Block动作示例例3  block No.0～６相对定位（绝对值定位也一样）连续block动作
+0
+1
+2
+3
+4
+5
+6
+0
+1
+2
+3
+4
+5
+6
+进入减速停止之前循环动作
+
+25
+珠海松下马达有限公司
+Block动作示例例4blockNo.0～６相对定位（绝对值定位也一样）暂时停止动作内容：用递
+⇒100 ms停止
+⇒10000脉冲动作
+⇒200 ms停止
+⇒-20000脉冲动作
+⇒500ms停止
+⇒如果SI7为L，变成H前为停止状态，变成H时跳转到Block No
+⇒0(将该引脚设为无效）
+
+26
+珠海松下马达有限公司
+Block动作示例例4block No.0～６相对定位（绝对值定位也一样）暂时停止实际动作
+0
+1
+2
+3
+4
+5
+6
+0
+1
+2
+3
+4
+5
+6
+
+27
+珠海松下马达有限公司
+Block动作示例例5  block No.0～7 相对定位（绝对值定位也一样）通过２个输入实现
+⇒0(将该引脚设为无效）SI8Pr4.07＝263172(ALM清除)
+⇒0(将该引脚设为无效）
+
+28
+珠海松下马达有限公司
+Block动作示例例5  block No.0～7 相对定位（绝对值定位也一样）通过２个输入实现
+0
+1
+2
+3
+4
+5
+6
+７
+1
+2
+3
+4
+5
+6
+７
+0
+0
+1
+2
+3
+4
+
+29
+珠海松下马达有限公司
+Block动作示例例6  block No.0JOG（以固定速度运转）动作内容：通过JOG指令可以固
+
+30
+珠海松下马达有限公司
+Block动作示例例7  block No.0～5JOG（定速运转）＋通过外部输入进行速度变
+
+31
+珠海松下马达有限公司
+Block动作示例例8  block No.50～54JOG＋转矩限制＋返回0位置动作
+⇒保持转矩限制的状态），之后定时1000ms后（转矩保持时间），返
+⇒HH_00000000HL_00010000LH
+
+32
+珠海松下马达有限公司
+Block动作示例例8  block No.50～54JOG＋转矩限制＋返回0位置实际
+50
+51
+52
+53
+54
+V0
+V1
+※因为是手动确认，反转时会发
+生波动
+1000ms说明：该波形将转矩限制设定成了20%。设定方法：Pr
+
+33
+珠海松下马达有限公司
+Block动作示例例9  block No.0～4近旋转功能（通过电池备份将编码器作为绝对式使
+
+34
+珠海松下马达有限公司
+Block动作示例例9  block No.0～4近旋转功能（通过电池备份将编码器作为绝对式使
+虽然绝对位置全部为正，但No.4的动作是反转的
+０度
+0
+1
+2
+3
+4
+30度
+330度⇒-60度动作
+
+35
+珠海松下马达有限公司
+Block动作示例例10  动作原点复位偏移量①使用绝对式编码器模式时设定内容：单圈的指令脉冲
+
+36
+珠海松下马达有限公司
+Block动作示例例10  动作原点复位偏移量①使用绝对式编码器模式时设定内容：单圈的指令脉冲
+
+37
+珠海松下马达有限公司
+Block动作示例例10  动作原点复位偏移量①使用增量式编码器模式时设定内容：单圈的指令脉冲
+
+38
+珠海松下马达有限公司
+Block动作示例例10  动作原点复位偏移量①使用增量式编码器模式时设定内容：单圈的指令脉冲
+
+39
+珠海松下马达有限公司
+附录：Modbus通信（线圈一览）Address线圈名称属性内容物理输入状态监视器：通过4400h_bit可监视输入信号(SI1~SI10)的状态。0000h输入信号１(SI1)ReadOnly0
+―002Ch内部速度指令
+選択１入力(INTSPD1)ReadOnly0：输入OFF、1：输入ON002Dh内部速度指令
+選択２入力(INTSPD2)ReadOnly0：输入OFF、1：输入ON002Eh厂家使用ReadOnly
+―002Fh厂家使用ReadOnly
+―0030h厂家使用ReadOnly
+―0031h厂家使用ReadOnly
+―0032h惯量比切换输入(J-SEL)ReadOnly0：输入OFF、1：输入ON0033h制振控制切换输入1(VS-SEL1)ReadOnly0：输入OFF、1：输入ON0034h内部指令速度选择3输入(IN
+―003Bh安全输入１(SF1)ReadOnly0：输入OFF、1：输入ON003Ch安全输入２(SF2)ReadOnly0：输入OFF、1：输入ON003Dh厂家使用ReadOnly
+―003Eh厂家使用ReadOnly
+―003Fh厂家使用ReadOnly
+―Address线圈名称属性内容逻辑输入信号操作：通过4406/4407h_bit可操作各输入的ON/OFF状态。在I/F连接器输入分配了相同的功能时，与线圈取”或”的关系。(伺服使能开启输入(SRV-ON)除外
+―0063h厂家使用R/W
+―0064h厂家使用R/W
+―0065h厂家使用R/W
+―0066h厂家使用R/W
+―0067h强制报警输入(E-STOP) 操作R/W0000h:输入OFF、FF00h:输入ON0068h厂家使用
+―0069h增益切换输入(GAIN) 操作R/W0000h:输入OFF、FF00h:输入ON006Ah厂家使用R/W
+―006Bh厂家使用R/W
+―006Ch厂家使用R/W
+―006Dh厂家使用R/W
+―006Eh厂家使用R/W
+―006Fh厂家使用R/W
+―0070h厂家使用R/W
+―0071h厂家使用R/W
+―0072h惯量比切换输入(J-SEL) 操作R/W0000h:输入OFF、FF00h:输入ON0073h制振控制切
+―0075h转矩限制切换输入(TL-SEL) 操作R/W0000h:输入OFF、FF00h:输入ON0076h制振控
+―物理输出状态监视器：通过4408h_bit可监视输出信号(SO1~SO6)的物理输出状态。0080h输出信号
+
+40
+珠海松下马达有限公司
+附录：Modbus通信（线圈一览）Address线圈名称属性内容逻辑输出状态监视器:通过440A/440Bh_bit可监视各输出的状态。00A0h伺服准备状态(S-RDY)ReadOnly0: 准备OF
+―00A8h厂家使用ReadOnly
+―00A9h速度到达检出状态ReadOnly0: 未检出1:检出00AAh厂家使用ReadOnly
+―00ABh厂家使用ReadOnly
+―00ACh厂家使用ReadOnly
+―00ADh动态制动器动作状态(DBRK)ReadOnly0：DB OFF 1：DB ON00AEh厂家使用ReadOnly
+―00AFh电机通电状态(FREE)ReadOnly0:通电1: 无通电00B0h警告输出１状态(WARN1)ReadOnly0:警告1未发生状态1: 警告1发生状态00B1h警告输出２状态(WARN2)ReadOnly0
+―电机动作状态监视：通过4410h_bit可监视电机动作状态。0100h转矩限制中状态ReadOnly0:转矩未限制1: 转矩限制中0101h30r/min 未满检出状态ReadOnly0: 30r/min 以上1: 30r/min 未满0102h负
+―0105h厂家使用ReadOnly
+―0106h厂家使用ReadOnly
+―0107h厂家使用ReadOnly
+―Address线圈名称属性内容Block 动作控制操作：通过4411h_bit可操作Block动作相关的控制标记。在I/F连接器输入分配了相同的功能时，与线圈取”或”的关系。0120h选通输入(STB) 操作R/
+―0122h原点接近输入(HOME) 操作R/W0000h:输
+時停止输入(H-STOP) 操作R/W0000h:输入OFF、FF00h:输入ON0124h
+減速停止输入(S-STOP) 操作R/W0000h:输入OFF、FF00h:输入ONBlock 动作控制监视器:通过4412h_bit可监视Bl
+―0132h原点接近输入(HOME) 状态ReadOnly0: 输
+時停止输入(H-STOP) 操作ReadOnly0: 输入OFF 1: 输入ON0134h减速停止输入(S-STOP) 操作ReadOnly0: 输
+―0139h厂家使用ReadOnly
+―013Ah厂家使用ReadOnly
+―013Bh厂家使用ReadOnly
+―013Ch厂家使用ReadOnly
+―013Dh厂家使用ReadOnly
+―013Eh厂家使用ReadOnly
+―013Fh厂家使用ReadOnly
+―Block动作状态监视:通过4413h_bit可监视Block动作
+
+41
+珠海松下马达有限公司
+附录：Modbus通信（寄存器一览）Address寄存器名称单位范围寄存器数属性内容1000hManufacturer device name(ASCII)－8ReadOnly驱动器型
+
+42
+珠海松下马达有限公司
+附录：Modbus通信（寄存器一览）Address寄存器名称单位范围寄存器数属性内容4000hStatusword1-0 
+–655351ReadOnly驱动器状态4001hError code-0 
+–655351ReadOnly错误编号主码（1byte）、辅码(1byte）例）Err26.0 时1400h（主码：1Ah＝26、辅码：00h＝0）4002hMotor name(ASCII)－8Rea
+–42949672952ReadOnly电机序列No.制造年（1byte）、制造月（1byte）、制造顺序（2byte）*1) 例）序列No.为14120001时Address 400Ah = 0C0Eh（12月
+–42949672952ReadOnly警告标记（参照bit信息①）400EhOverload ratio%0 
+–5001ReadOnly电机负载率400FhRegenarative load factor%-32768 
+–327671ReadOnly再生负载率4010hPower supply onintegrated time0.5h-2147483648 
+–21474836472ReadOnly电源ON累计时间4012hDriver temperature℃-32768 
+–327671ReadOnly伺服驱动器温度4013hNumber of times of irruptive resistance relay changing次-2147483648 
+–21474836472ReadOnly浪涌抑制电阻继电器变化次数（正值）4015hNumber of times of dynamicbrake relay changing次-2147483648 
+–21474836472ReadOnly动态制动器继电器变化次数（正值）4017hFan operation time0.5h0 
+–10000002ReadOnly风扇运行时间4019hFan life time integratedvalue0.1%0 
+–10001ReadOnly风扇寿命累计值（100％时警告）401AhCondenser life timeintegrated value0.1%0 
+–10001ReadOnly电容寿命累计值（100 ％时警告）401BhEncoder temperature℃-32768 
+–327671ReadOnly编码器温度401ChVelocity command value指令单位/s-2147483648 
+–21474836472ReadOnly滤波前指令速度401EhVelocity command valuer/min-32768 
+–327671ReadOnly位置指令速度401FhVelocity command valuer/min-32768 
+–327671ReadOnly内部位置指令速度4020hPosition command value指令单位-2147483648 
+–21474836472ReadOnly滤波后指令位置4022hFollowing error actualvaluePulse-2147483648 
+–21474836472ReadOnly编码器位置偏差4024hVelocity command valuer/min-32768 
+–327671ReadOnly速度控制指令4025hVelocity actual valuer/min-32768 
+–327671ReadOnly电机速度4026hVelocity limit valuer/min-32768 
+–327671ReadOnly速度限制4027hFull close positionfollowing errorPulse-2147483648 
+–21474836472ReadOnly全闭环偏差4029hHybrid following error指令单位-2147483648 
+–21474836472ReadOnly混合偏差402BhVelocity command value指令单位/s-2147483648 
+–21474836472ReadOnly滤波后指令速度
+
+43
+珠海松下马达有限公司
+附录：Modbus通信（寄存器一览）Address寄存器名称单位范围寄存器数属性内容4100hAbsolute multiturn data clear function-0 
+–42949672951R/W绝对式编码器清除功能写入“6165h”后，实行绝对式多圈数据清除。4102hTrip reset function-0 
+–42949672951R/W报警
+・警告清除写入“7274h”后，实行报警·警告清除4200hEncoder ID-L-0 -2551ReadOnly编码器ID-LEncoder ID-H
+
+44
+珠海松下马达有限公司
+附录：Modbus通信（寄存器一览）Address寄存器名称单位范围寄存器数属性内容4400hPhysical input-0 
+–42949672952ReadOnly物理输入状态监视器（线圈映射）（参照bit信息②）4402hLogical input-0 
+–42949672952ReadOnly逻辑输入状态监视器（线圈映射）（参照bit信息②）4406hVirtual input-0 
+–42949672952R/W逻辑输入信号操作（线圈映射）（参照bit信息③）4408hPhysical output-0 
+–42949672952ReadOnly物理输出状态监视器（线圈映射）（参照bit信息④）440AhLogical output-0 
+–42949672952ReadOnly逻辑输出状态监视器（线圈映射）（参照bit信息④）4410hStatus flag-0 -2551ReadOnly电机动作状态监视器（线圈映射）（参照bit信息⑤）4411hBlock contr
+–655351R/WBlock动作控制操作（线圈映射）（参照bit信息⑤）4412hActual blockcontrolword-0 
+–655351ReadOnlyBlock动作控制监视器（线圈映射）（参照bit信息⑥）4413hBlock status flag-0 
+–655351ReadOnlyBlock动作状态监视器（线圈映射）（参照bit信息⑥）4414hBlock number-0 
+–655351R/W指定Block No.4415hActual block number-0 
+–655351ReadOnly实际的Block No.4416hBlock number monitor-0 
+–655351ReadOnly当前有效的BlockNo.4418hMirror register1-0 -655351R/W可以针对Pr5.58“Modbus镜像寄存器设定1”中设定了地址的Modbus寄存器进行读写。4419hMirror registe
+–655351R/W可以针对Pr5.59“Modbus镜像寄存器设定2”中设定了地址的Modbus寄存器进行读写。441AhMirror register3-0 
+–655351R/W可以针对Pr5.60“Modbus镜像寄存器设定3”中设定了地址的Modbus寄存器进行读写。441BhMirror register4-0 
+–655351R/W可以针对Pr5.61“Modbus镜像寄存器设定4”中设定了地址的Modbus寄存器进行读写。441ChMirror register5-0 
+–655351R/W可以针对Pr5.62“Modbus镜像寄存器设定5”中设定了地址的Modbus寄存器进行读写。441DhMirror register6-0 
+–655351R/W可以针对Pr5.63“Modbus镜像寄存器设定6”中设定了地址的Modbus寄存器进行读写。441EhMirror register7-0 
+–655351R/W可以针对Pr5.64“Modbus镜像寄存器设定7”中设定了地址的Modbus寄存器进行读写。441FhMirror register8-0 
+–655351R/W可以针对Pr5.65“Modbus镜像寄存器设定8”中设定了地址的Modbus寄存器进行读写。4420hMirror register9-0 
+–655351R/W可以针对Pr5.79“Modbus镜像寄存器设定9”中设定了地址的Modbus寄存器进行读写。4421hMirror register10-0 
+–655351R/W可以针对Pr5.80“Modbus镜像寄存器设定10”中设定了地址的Modbus寄存器进行读写。4422hMirror register11-0 
+–655351R/W可以针对Pr5.81“Modbus镜像寄存器设定11”中设定了地址的Modbus寄存器进行读写。4423hMirror register12-0 
+–655351R/W可以针对Pr5.82“Modbus镜像寄存器设定12”中设定了地址的Modbus寄存器进行读写。4424hMirror register13-0 
+–655351R/W可以针对Pr5.83“Modbus镜像寄存器设定13”中设定了地址的Modbus寄存器进行读写。4425hMirror register14-0 
+–655351R/W可以针对Pr5.84“Modbus镜像寄存器设定14”中设定了地址的Modbus寄存器进行读写。4426hMirror register15-0 
+–655351R/W可以针对Pr5.85“Modbus镜像寄存器设定15”中设定了地址的Modbus寄存器进行读写。4427hMirror register16-0 -655351R/W可以针对Pr5.86“Modbus镜像寄存器设定16”
+
+45
+珠海松下马达有限公司
+附录：Modbus通信（寄存器一览）Address寄存器名称单位范围寄存器数属性内容4600hBlock velocity 0r/min0 
+–200001R/WPr60.00（Block动作速度０）4601hBlock velocity 1r/min0 
+–200001R/WPr60.01（Block动作速度１）4602hBlock velocity 2r/min0 
+–200001R/WPr60.02（Block动作速度２）4603hBlock velocity 3r/min0 
+–200001R/WPr60.03（Block动作速度３）4604hBlock velocity 4r/min0 
+–200001R/WPr60.04（Block动作速度４）4605hBlock velocity 5r/min0 
+–200001R/WPr60.05（Block动作速度５）4606hBlock velocity 6r/min0 
+–200001R/WPr60.06（Block动作速度６）4607hBlock velocity 7r/min0 
+–200001R/WPr60.07（Block动作速度７）4608hBlock velocity 8r/min0 
+–200001R/WPr60.08（Block动作速度８）4609hBlock velocity 9r/min0 
+–200001R/WPr60.09（Block动作速度９）460AhBlock velocity 10r/min0 
+–200001R/WPr60.10（Block动作速度１０）460BhBlock velocity 11r/min0 
+–200001R/WPr60.11（Block动作速度１１）460ChBlock velocity 12r/min0 
+–200001R/WPr60.12（Block动作速度１２）460DhBlock velocity 13r/min0 
+–200001R/WPr60.13（Block动作速度１３）460EhBlock velocity 14r/min0 
+–200001R/WPr60.14（Block动作速度１４）460FhBlock velocity 15r/min0 
+–200001R/WPr60.15（Block动作速度１５）4610hBlock accelaration 0ms/(3000r/min)0 
+–100001R/WPr60.16（Block动作加速度０）4611hBlock accelaration 1ms/(3000r/min)0 
+–100001R/WPr60.17（Block动作加速度１）4612hBlock accelaration 2ms/(3000r/min)0 
+–100001R/WPr60.18（Block动作加速度２）4613hBlock accelaration 3ms/(3000r/min)0 
+–100001R/WPr60.19（Block动作加速度３）4614hBlock accelaration 4ms/(3000r/min)0 
+–100001R/WPr60.20（Block动作加速度４）4615hBlock accelaration 5ms/(3000r/min)0 
+–100001R/WPr60.21（Block动作加速度５）4616hBlock accelaration 6ms/(3000r/min)0 
+–100001R/WPr60.22（Block动作加速度６）4617hBlock accelaration 7ms/(3000r/min)0 
+–100001R/WPr60.23（Block动作加速度７）4618hBlock accelaration 8ms/(3000r/min)0 
+–100001R/WPr60.24（Block动作加速度８）4619hBlock accelaration 9ms/(3000r/min)0 
+–100001R/WPr60.25（Block动作加速度９）461AhBlock accelaration 10ms/(3000r/min)0 
+–100001R/WPr60.26（Block动作加速度１０）461BhBlock accelaration 11ms/(3000r/min)0 
+–100001R/WPr60.27（Block动作加速度１１）461ChBlock accelaration 12ms/(3000r/min)0 
+–100001R/WPr60.28（Block动作加速度１２）461DhBlock accelaration 13ms/(3000r/min)0 
+–100001R/WPr60.29（Block动作加速度１３）461EhBlock accelaration 14ms/(3000r/min)0 
+–100001R/WPr60.30（Block动作加速度１４）461FhBlock accelaration 15ms/(3000r/min)0 
+–100001R/WPr60.31（Block动作加速度１５）
+
+46
+珠海松下马达有限公司
+附录：Modbus通信（寄存器一览）Address寄存器名称单位范围寄存器数属性内容4620hBlock decelaration 0ms/(3000r/min)0 
+–100001R/WPr60.32（Block动作减速度０）4621hBlock decelaration 1ms/(3000r/min)0 
+–100001R/WPr60.33（Block动作减速度１）4622hBlock decelaration 2ms/(3000r/min)0 
+–100001R/WPr60.34（Block动作减速度２）4623hBlock decelaration3ms/(3000r/min)0 
+–100001R/WPr60.35（Block动作减速度３）4624hBlock decelaration 4ms/(3000r/min)0 
+–100001R/WPr60.36（Block动作减速度４）4625hBlock decelaration5ms/(3000r/min)0 
+–100001R/WPr60.37（Block动作减速度５）4626hBlock decelaration 6ms/(3000r/min)0 
+–100001R/WPr60.38（Block动作减速度６）4627hBlock decelaration 7ms/(3000r/min)0 
+–100001R/WPr60.39（Block动作减速度７）4628hBlock decelaration 8ms/(3000r/min)0 
+–100001R/WPr60.40（Block动作减速度８）4629hBlock decelaration 9ms/(3000r/min)0 
+–100001R/WPr60.41（Block动作减速度９）462AhBlock decelaration 10ms/(3000r/min)0 
+–100001R/WPr60.42（Block动作减速度１０）462BhBlock decelaration 11ms/(3000r/min)0 
+–100001R/WPr60.43（Block动作减速度１１）462ChBlock decelaration 12ms/(3000r/min)0 
+–100001R/WPr60.44（Block动作减速度１２）462DhBlock decelaration 13ms/(3000r/min)0 
+–100001R/WPr60.45（Block动作减速度１３）462EhBlock decelaration 14ms/(3000r/min)0 
+–100001R/WPr60.46（Block动作减速度１４）462FhBlock decelaration 15ms/(3000r/min)0 
+–100001R/WPr60.47（Block动作减速度１５）4630hBlock methods--32768 
+–327671R/WPr60.48（Block动作方法设定）4631hBlock home offset指令单位-2147483648 
+–21474836472R/WPr60.49（Block动作原点偏移）4633hBlock max positionlimit指令单位-2147483648 
+–21474836472R/WPr60.50（Block动作正方向软限位）4635hBlock min positionlimit指令单位-2147483648 
+–21474836472R/WPr60.51（Block动作负方向软限位）4637hBlock homing speed(high)r/min0 
+–200001R/WPr60.52（Block动作原点回归速度（高速））
+
+47
+珠海松下马达有限公司
+附录：Modbus通信（寄存器一览）Address寄存器名称单位范围寄存器数属性内容4638hBlock homing speed (low)r/min0 
+–200001R/WPr60.53（Block动作原点回归速度（低速））4639hBlock homing accelarationms/(3000r/min)0 
+–100001R/WPr60.54（Block动作原点回归加减速度）463AhBlock homingless-0 
+–11R/WPr60.55（Block动作原点回归无效化设定）4800hBlock command 0--2147483648 
+–21474836472R/WPr56.000（Block 指令0）4802hBlock data 0--2147483648 
+–21474836472R/WPr56.001（Block 数据0）4804hBlock command 1--2147483648 
+–21474836472R/WPr56.002（Block 指令1）4806hBlock data 1--2147483648 
+–21474836472R/WPr56.003（Block 数据1）.....................48FChBlock command 63--2147483648 
+–21474836472R/WPr56.126（Block 指令63）48FEhBlock data 63--2147483648 
+–21474836472R/WPr56.127（Block 数据63）4900hBlock command 64--2147483648 
+–21474836472R/WPr57.000（Block 指令64）4902hBlock data 64--2147483648 
+–21474836472R/WPr57.001（Block 数据64）4904hBlock command 65--2147483648 
+–21474836472R/WPr57.002（Block 指令65）4906hBlock data 65--2147483648 
+–21474836472R/WPr57.003（Block 数据65）.....................49FChBlock command 127--2147483648 
+–21474836472R/WPr57.126（Block 指令127）49FEhBlock data 127--2147483648 
+–21474836472R/WPr57.127（Block 数据127）4A00hBlock command 128--2147483648 
+–21474836472R/WPr58.000（Block 指令128）4A02hBlock data 128--2147483648 
+–21474836472R/WPr58.001（Block 数据128）4A04hBlock command 129--2147483648 
+–21474836472R/WPr58.002（Block 指令129）4A06hBlock data 129--2147483648 
+–21474836472R/WPr58.003（Block 数据129）.....................4AFChBlock command 191--2147483648 
+–21474836472R/WPr58.126（Block 指令191）4AFEhBlock data 191--2147483648 
+–21474836472R/WPr58.127（Block 数据191）4B00hBlock command 192--2147483648 
+–21474836472R/WPr59.000（Block 指令192）4B02hBlock data 192--2147483648 
+–21474836472R/WPr59.001（Block 数据192）4B04hBlock command 193--2147483648 
+–21474836472R/WPr59.002（Block 指令193）4B06hBlock data 193--2147483648 
+–21474836472R/WPr59.003（Block 数据193）.....................4BFChBlock command 255--2147483648 
+–21474836472R/WPr59.126（Block 指令255）4BFEhBlock data 255--2147483648 
+–21474836472R/WPr59.127（Block 数据255）
+
+48
+珠海松下马达有限公司
+附录：Modbus通信（寄存器一览）Address寄存器名称单位范围寄存器数属性内容4D00h位置偏差（滤波器后）pulse-2147483648 
+–21474836472ReadOnly位置偏差（滤波器后）4D02h编码器分辨率pulse/r-2147483648 
+–21474836472ReadOnly编码器分辨率4D06h实际速度r/min-2147483648 
+–21474836472ReadOnly实际速度4D08h转矩指令0.05%-2147483648 
+–21474836472ReadOnly转矩指令4D0Ah指令速度（滤波器前）r/min-2147483648 
+–21474836472ReadOnly指令速度（滤波器前）4D0Ch指令速度（滤波器后）r/min-2147483648 
+–21474836472ReadOnly指令速度（滤波器后）4D0Eh外部位移传感器位置pulse-2147483648 
+–21474836472ReadOnly外部位移传感器位置4D10h再生负载率0.1%-2147483648 
+–21474836472ReadOnly再生负载率4D12h过负载率0.2%-2147483648 
+–21474836472ReadOnly过载负载率4D14h扩展逻辑输入--2147483648 
+–21474836472ReadOnly扩展逻辑输入4D16h扩展逻辑输出--2147483648 
+–21474836472ReadOnly扩展逻辑输出4D18h物理输入--2147483648 
+–21474836472ReadOnly物理输入4D1Ah物理输出--2147483648 
+–21474836472ReadOnly物理输出4D1Ch惯量比%-2147483648 
+–21474836472ReadOnly惯量比4D1Eh电机自动识别有效状态--2147483648 
+–21474836472ReadOnly电机自动识别有效状态4D20h警告标记--2147483648 
+–21474836472ReadOnly警告标记4D22h控制模式--2147483648 
+–21474836472ReadOnly控制模式4D24h机械角（编码器单圈旋转数据）pulse-2147483648 
+–21474836472ReadOnly机械角（编码器单圈旋转数据）4D26h电气角0.0879°-2147483648 
+–21474836472ReadOnly电气角4D28h绝对式编码器的多圈旋转数据r-2147483648 
+–21474836472ReadOnly绝对式编码器的多圈旋转数据4D2Ah计数器基准时间0.5h-2147483648 
+–21474836472ReadOnly计数器基准时间4D2Ch电源接通累计时间0.5h-2147483648 
+–21474836472ReadOnly电源接通累计时间4D2Eh报警发生时间0.5h-2147483648 
+–21474836472ReadOnly报警发生时间4D30h驱动器温度℃-2147483648 
+–21474836472ReadOnly驱动器温度4D32h编码器温度℃-2147483648 
+–21474836472ReadOnly编码器温度4D34h风扇运行时间0.5h-2147483648 
+–21474836472ReadOnly风扇运行时间4D36h风扇寿命累计值0.1%-2147483648 
+–21474836472ReadOnly风扇寿命累计值4D38h电容寿命累计值0.1%-2147483648 
+–21474836472ReadOnly电容寿命累计值4D3Ah主电源PN间电压V-2147483648 
+–21474836472ReadOnly主电源PN间电压
+
+49
+珠海松下马达有限公司
+附录：Modbus通信（寄存器一览）Address寄存器名称单位范围寄存器数属性内容4D42h编码器通信异常次数次-2147483648 
+–21474836472ReadOnly编码器通信异常次数4D46h外部位移传感器通信异常次数次-2147483648 
+–21474836472ReadOnly外部位移传感器通信异常次数4D54h浪涌抑制电阻继电器变化次数次-2147483648 
+–21474836472ReadOnly浪涌抑制电阻继电器变化次数4D56h动态制动器继电器变化次数次-2147483648 
+–21474836472ReadOnly动态制动器继电器变化次数4D5Ch逻辑输入--2147483648 
+–21474836472ReadOnly逻辑输入4D5Eh逻辑输出--2147483648 
+–21474836472ReadOnly逻辑输出4D60h外部位移传感器位置（指令方向反转前）pulse-2147483648 
+–21474836472ReadOnly外部位移传感器位置（指令方向反转前）4DC0h劣化诊断状态--2147483648 
+–21474836472ReadOnly劣化诊断状态4DC2h劣化诊断转矩指令平均值0.1%-2147483648 
+–21474836472ReadOnly劣化诊断转矩指令平均值4DC4h劣化诊断转矩指令标准偏差0.1%-2147483648 
+–21474836472ReadOnly劣化诊断转矩指令标准偏差4DC6h劣化诊断惯量比推定值%-2147483648 
+–21474836472ReadOnly劣化诊断惯量比推定值4DC8h劣化诊断偏载重推定值0.1%-2147483648 
+–21474836472ReadOnly劣化诊断偏载重推定值4DCAh劣化诊断动摩擦推定值0.1%-2147483648 
+–21474836472ReadOnly劣化诊断动摩擦推定值4DCCh劣化诊断粘性摩擦推定值0.1%/(1000r/min)-2147483648 
+–21474836472ReadOnly劣化诊断粘性摩擦推定值6001hError code-0 
+–655351ReadOnly读取报警编号600AhModes of operationdisplay--128 
+–1271ReadOnly驱动器内部的控制模式600BhPosition demand value指令单位-2147483648 
+–21474836472ReadOnly滤波前指令位置600DhPosition actual internalvaluePulse-2147483648 
+–21474836472ReadOnly电机位置(外部位移传感器单位)600FhPosition actual value指令单位-2147483648 
+–21474836472ReadOnly电机位置601AhVelocity demand value指令单位/s-2147483648 
+–21474836472ReadOnly内部指令速度601ChVelocity actual value指令单位/s-2147483648 
+–21474836472ReadOnly电机速度6025hTorque demand0.1%-32768 
+–327671ReadOnly内部指令转矩6026hMotor rated currentmA0 
+–42949672952ReadOnly电机额定电流602ChDC link circuit voltagemV0 
+–42949672952ReadOnly主电源PN间电压609ChFollowing error actualvalue指令单位-2147483648 
+–21474836472ReadOnly位置偏差609EhControl effort指令单位/s-2147483648 
+–21474836472ReadOnly内部指令速度(位置环的输出)60A0hPosition demand internalvaluepulse-2147483648 
+–21474836472ReadOnly内部指令位置60A2hDigital inputs-0 
+–42949672952ReadOnly外部输出信号监视器
+
+50
+珠海松下马达有限公司
+附录：Modbus通信（寄存器详情）bit信息①■400Ch-400Dh，Warning flag（警告标识）
+bit略称意义
+31--
+30--
+29--
+28--
+27--
+26--
+25--
+24--
+23--
+22--
+21--
+20--
+19--
+18--
+17--
+16--
+15--
+14B_WARN1_CODE_ACOFF_WC3主电源关闭警告
+13--
+12--
+11--
+10B_WARN1_EXS_COM_WA9外部位移传感器通信异常警告
+9B_WARN1_OSC_WA6发振检出警告
+8B_WARN1_EX_SCALE_WA8外部位移传感器警告
+7B_WARN1_OVL_WA0过负载警告
+6B_WARN1_FAN_WA3风扇锁死警告
+5B_WARN1_OR_WA1过再生警告
+4B_WARN1_EN_COM_WA4编码器通信异常警告
+3B_WARN1_OLH_WA5编码器过热警告
+2B_WARN1_LONGEVITY_WA7寿命警告
+1--
+0B_WARN1_BATT_WA2电池警告■4201h,Encoder status（编码器状态）bit略称意义15--14--13--12--11--10--9--8--7B_BLA（Warn.A2）电池警告6B_SDE（Err40.0）绝对式系统宕机异常保护5B
+
+51
+珠海松下马达有限公司
+附录：Modbus通信（寄存器详情）bit信息②■4400h-4401h,Physicalinput（物理输入）
+bit略称意义
+31--
+30--
+29--
+28--
+27--
+26--
+25--
+24--
+23--
+22--
+21--
+20--
+19--
+18--
+17--
+16--
+15--
+14--
+13--
+12--
+11--
+10INPUT_SI10SI10输入
+9INPUT_SI9SI10输入
+8INPUT_SI8SI10输入
+7INPUT_SI7SI10输入
+6INPUT_SI6SI10输入
+5INPUT_SI5SI10输入
+4INPUT_SI4SI10输入
+3INPUT_SI3SI10输入
+2INPUT_SI2SI10输入
+1INPUT_SI1SI10输入
+0INPUT_SI0SI10输入■4402h-4403h,Logicalinput（逻辑输入）
+bit略称意义
+31B_DB_OFF_REQ动态制动器输入(追加)
+30--
+29--
+28B_SF2安全输入2
+27B_SF1安全输入1
+26--
+25B_TC_SIGN转矩符号指定
+24B_VC_SIGN速度符号指定
+23B_DIV2指令分倍频切换2
+22B_VS_SEL2制振切换2
+21B_TL_SEL转矩限制切换
+20B_INTSPD3内部速度指令选择3输入
+19B_VS_SEL制振切换1
+18B_J_SEL惯量比切换输入
+17--
+16--
+15--
+14--
+13B_INTSPD2内部速度指令选择2输入
+12B_INTSPD1内部速度指令选择1输入
+11--
+10B_C_CLR计数器清零输入
+9B_GAIN增益切换输入
+8B_INH指令脉冲输入禁止输入
+7B_E_STOP强制报警输入
+6B_DIV指令分倍频切换1
+5B_ZEROSPD零速箝位输入
+4B_C_MODE控制模式切换输入
+3B_NEW_POT正方向驱动禁止输入
+2B_NEW_NOT负方向驱动禁止输入
+1B_ACLR报警清除输入
+0B_SRV_ON伺服使能开启输入
+
+52
+珠海松下马达有限公司
+附录：Modbus通信（寄存器详情）bit信息③■4404h-4405h,Extented logical input（扩展逻辑输入）
+bit略称意义
+31--
+30--
+29--
+28--
+27--
+26--
+25--
+24--
+23--
+22B_EXT_SI_MON5/B_B_H_STOP立即停止输入
+21B_EXT_SI_MON4/B_B_S_STOP减速停止输入
+20
+19B_EXT_SI_MON2/B_B_SEL_128Block指定输入128
+18B_EXT_SI_MON1/B_B_SEL_64Block指定输入64
+17
+16
+15B_B_STB选通输入
+14
+13B_B_SEL_32Block指定输入32
+12B_B_SEL_16Block指定输入16
+11B_B_SEL_8Block指定输入8
+10B_B_SEL_4Block指定输入4
+9B_B_SEL_2Block指定输入2
+8B_B_SEL_1Block指定输入1
+7--
+6--
+5--
+4B_EXT_Z_LS原点接近输入
+3--
+2--
+1--
+0--■4406h-4407h,Virtual input（虚拟输入）
+bit略称意义
+31--
+30--
+29--
+28--
+27--
+26--
+25--
+24--
+23--
+22B_VS_SEL2制振切换2操作
+21B_TL_SEL转矩限制选择操作
+20--
+19B_VS_SEL制振切换1操作
+18B_J_SEL惯量比切换输入操作
+17--
+16--
+15--
+14--
+13--
+12--
+11--
+10--
+9B_GAIN增益切换输入操作
+8--
+7B_E_STOP强制报警输入操作
+6--
+5--
+4--
+3--
+2--
+1B_ACLR报警清除输入操作
+0B_SRV_ON伺服使能开启操作
+
+53
+珠海松下马达有限公司
+附录：Modbus通信（寄存器详情）bit信息④■4408h-4409h,Physical output（物理输出）
+bit略称意义
+31--
+30--
+29--
+28--
+27--
+26--
+25--
+24--
+23--
+22--
+21--
+20--
+19--
+18--
+17--
+16--
+15--
+14--
+13--
+12--
+11--
+10--
+9--
+8--
+7--
+6--
+5OUTPUT_SO6SO6输出
+4OUTPUT_SO5SO5输出
+3OUTPUT_SO4SO4输出
+2OUTPUT_SO3SO3输出
+1OUTPUT_SO2SO2输出
+0OUTPUT_SO1SO1输出■440Ah-440Bh,Logical output（逻辑输出）
+bit略称意义
+31--
+30--
+29--
+28--
+27--
+26--
+25--
+24--
+23B_O_EDM安全EDM信号输出
+22B_V_CMD速度指令有无输出
+21B_ALM_ATB报警属性输出
+20B_V_LIMIT速度限制中
+19B_COIN2第2定位结束
+18B_P_CMD位置指令有无输出
+17B_WARN2警告输出2
+16B_WARN1警告输出1
+15B_FREE电机励磁
+14--
+13B_DBRK动态制动器控制
+12--
+11--
+10--
+9V_VEL_ARV到达速度
+8--
+7--
+6B_V_COIN速度一致
+5B_TLC转矩限制
+4B_ZSP零速度
+3B_BRK_OFF制动器解除
+2B_COIN定位结束
+1B_ALM跳闸
+0B_S_RDY伺服准备
+
+54
+珠海松下马达有限公司
+附录：Modbus通信（寄存器详情）bit信息⑤■440Ch-440Dh,Extendedlogicaloutput（扩展物理输出）
+bit略称意义
+31--
+30--
+29--
+28--
+27--
+26--
+25--
+24--
+23--
+22--
+21--
+20--
+19--
+18--
+17--
+16--
+15B_B_CTRL_6Block操作信号6
+14B_B_CTRL_5Block操作信号5
+13B_B_CTRL_4Block操作信号4
+12B_B_CTRL_3Block操作信号3
+11B_B_CTRL_2Block操作信号2
+10B_B_CTRL_1Block操作信号1
+9--
+8B_EXT_HOME_CMP原点回归完成状态
+7B_B_BUSYBlock动作中状态
+6--
+5--
+4--
+3--
+2--
+1--
+0--■4410h,Staus flag（状态信息）
+bit略称意义
+15--
+14--
+13--
+12--
+11--
+10--
+9--
+8--
+7--
+6--
+5--
+4--
+3B_V_POSITIVE正方向旋转中
+2B_V_NEGATIVE负方向旋转中
+1B_EN_DB_V不足动态制动器许可速度(不足30 r/min)
+0B_TLC转矩限制中■4411h,Block controlword（Block动作控制标识）
+bit略称意义
+15--
+14--
+13--
+12--
+11--
+10--
+9--
+8--
+7--
+6--
+5--
+4B_B_S_STOP减速停止(S-STOP)
+3B_B_H_STOP立即停止(H-STOP)
+2B_B_HOME原点接近(HOME)
+1--
+0B_B_STB选通(STB)
+
+55
+珠海松下马达有限公司
+附录：Modbus通信（寄存器详情）bit信息⑥■4413h,Blocksatatusflag（Block动作状态标识）
+bit略称意义
+15--
+14--
+13--
+12--
+11--
+10--
+9--
+8--
+7B_B_CTRL6Block动作输出6(B-CTRL6)
+6B_B_CTRL5Block动作输出5(B-CTRL5)
+5B_B_CTRL4Block动作输出4(B-CTRL4)
+4B_B_CTRL3Block动作输出3(B-CTRL3)
+3B_B_CTRL2Block动作输出2(B-CTRL2)
+2B_B_CTRL1Block动作输出1(B-CTRL1)
+1B_EXT_HOME_CMP原点回归完成状态(HOME_CMP)
+0B_B_BUSY动作执行状态(BUSY)■4412h,Actual blockcontrolword（实际的block动作控制标识）
+bit略称意义
+15--
+14--
+13--
+12--
+11--
+10--
+9--
+8--
+7--
+6--
+5--
+4B_B_S_STOP实际的减速停止(S-STOP)
+3B_B_H_STOP实际的立即停止(H-STOP)
+2B_B_HOME实际的原点接近(HOME)
+1--
+0B_B_STB实际的选通(STB)
+

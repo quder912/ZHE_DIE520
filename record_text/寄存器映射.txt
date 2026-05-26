@@ -2,70 +2,107 @@
 ==========
 
 本文件记录松下 MINAS A6 系列驱动器的 Modbus 寄存器地址映射。
+主要依据 sx-zsv00015_r6_1c 文档和 a6bm-m01-block-modbus 文档。
 
-1. 线圈地址（Modbus 0x01/0x05 功能码）
+1. 线圈地址（Modbus 01h/05h 功能码）
 
    地址     名称       说明
    ─────── ────────── ─────────────────────────
-   0x0060  Servo ON   伺服使能（ON=1, OFF=0）
-   0x0120  STB        Block 动作启动触发（Pr5.42=4 时自动 OFF）
+   0060h   Servo ON   伺服使能（FF00h=ON, 0000h=OFF）
+   0061h   ACLR       报警清除（FF00h=清除）
+   0062h   E-STOP     强制报警（FF00h=ON）
+   00A0h   S-RDY      伺服准备状态（RO）
+   0104h   定位完成    （RO）
+   0120h   STB        Block 动作启动触发（FF00h=启动）
+   0123h   H-STOP     立即停止（FF00h=急停）
+   0124h   S-STOP     减速停止（FF00h=减速停）
+   0130h   STB 状态   （RO）
 
-2. 保持寄存器地址（Modbus 0x03/0x06/0x10 功能码）
+2. 保持寄存器地址（Modbus 03h/06h/10h 功能码）
 
-   保持寄存器的寻址范围：
-   - 驱动器参数：Pr0.xx ~ Pr7.xx
-   - 控制命令寄存器
-   - 状态监控寄存器
-   - Block 动作相关寄存器
+   2.1 驱动器信息（RO）
+   地址     名称                        说明
+   ─────── ──────────────────────────── ─────────────────────
+   1000h   Manufacturer device name     驱动器型号（8字节ASCII）
+   1008h   Motor serial No.             电机序列号
+   100Ch   Motor name                   电机型号（8字节ASCII）
 
-   各 Pr 参数对应的 Modbus 寄存器地址如下：
+   2.2 状态监视（RO）
+   地址     名称                        单位        说明
+   ─────── ──────────────────────────── ────────── ──────────
+   4000h   Statusword                  —           驱动器当前状态
+   4001h   Error code                  —           错误编号
+   400Dh   Overload ratio              %           电机负载率
+   400Eh   Regenerative load factor    %           再生负载率
+   4012h   Driver temperature          ℃           驱动器温度
+   401Eh   Velocity command value      r/min       指令速度
+   4022h   Following error             pulse(32bit) 位置偏差
+   4025h   Velocity actual value       r/min       电机实际速度
 
-   参数编号   寄存器地址   说明
-   ──────── ──────────── ─────────────────────
-   Pr0.00    0x0000      驱动器参数区域
-   Pr0.01    0x0001
-   Pr0.02    0x0002
-   ...
-   Pr0.13    0x000D      转矩限制（Pr0.013, 对应 PDF 中转矩限制设定）
-   ...
-   Pr5.00    0x0003      站号（Modbus 从站地址）
-   Pr5.01    0x0004      通信速度
-   Pr5.02    0x0005      通信协议选择
-   Pr5.03    0x0006      数据格式
-   Pr5.42    0x002A      STB 自动 OFF 设置
-   ...
-   Pr6.28    0x006C      通信控制选择
-   Pr6.88    0x0158      绝对式多圈数据上限值
+   2.3 控制命令（R/W）
+   地址     名称                        说明
+   ─────── ──────────────────────────── ─────────────────────
+   4100h   多圈清零                    写入 6165h 执行
+   4102h   报警清除                    写入 7274h 执行
+   1020h   保存所有参数到 EEPROM       写入 6173h 执行（耗时约300ms）
 
-   注意：PDF 中的寄存器地址表页（第 39~55 页）信息以图片/表格形式存在，
-   提取受限。上述地址基于 PDF 文档片段整理，使用前建议用 Panaterm 验证。
+   2.4 信号监视（bit映射）
+   地址     名称                属性   说明
+   ─────── ────────────────── ────── ─────────────────────
+   4400h   Physical input       RO    物理输入状态
+   4402h   Logical input        RO    逻辑输入状态
+   4406h   Virtual input        R/W   逻辑输入操作
+   4408h   Physical output      RO    物理输出状态
+   440Ah   Logical output       RO    逻辑输出状态
+   4410h   Status flag          RO    电机动作状态
+   4411h   Block control        R/W   Block动作控制操作
+   4412h   Block control actual RO    Block动作控制监视
+   4413h   Block status flag    RO    bit0=B_BUSY
+   4414h   Block number         R/W   写入 Block 编号（0~255）
 
-3. PDF 中提到的关键寄存器区域（寄存器一览页面 41-49）
+   2.5 Block 动作参数
+   地址          名称                  单位              说明
+   ──────────── ──────────────────── ──────────────── ──────────────────
+   4600h~460Fh  Block velocity V0~V15 r/min            Block速度设定
+   4610h~461Fh  Block accel A0~A15    ms/(3000r/min)   Block加速度设定
+   4620h~462Fh  Block decel D0~D15    ms/(3000r/min)   Block减速度设定
+   4638h        Block homing speed(lo) r/min           原点复归低速
+   4639h        Block homing speed(hi) r/min           原点复归高速
+   4800h+       Block commands (0~255)  —              Block指令数据区
 
-   - 控制命令寄存器区域（用于发送控制指令）
-   - 参数读写区域（用于读写 Pr 参数）
-   - Block 动作数据区域（用于编辑 Block 动作指令）
-   - 状态监控区域（用于读取运行状态）
-   - 告警记录区域
+   2.6 位置反馈
+   地址     名称                  单位     说明
+   ─────── ──────────────────── ──────── ────────────────
+   4D00h   位置偏差（滤波后）     pulse    当前跟随误差
+   4D0Ch   转矩指令               0.1%     —
+   4D24h   编码器单圈位置         pulse    32bit
+   4D28h   绝对式多圈数据         —        64bit
 
-   寄存器一览表中标记为 "-" 的部分表示保留或未使用的地址。
+3. Pr 参数与 Modbus 寄存器地址的映射
 
-4. Block 动作相关寄存器
+   ⚠️ Pr 参数的 Modbus 寄存器地址映射表在 PDF 中以图片/表格形式存在，
+   提取受限。已知的关键参数对照如下：
 
-   PDF 文档提到通过 4414h 寄存器写入 Block No：
-   - 4414h（0x4414）：写入要启动的 Block 编号
-     当通过 Modbus 启动 Block 动作时，向此地址写入 Block 编号
+   参数编号    说明                    备注
+   ──────── ────────────────────── ──────────────────────
+   Pr5.29    RS232 通信波特率设置      0=2400 ... 6=115200,7=230400
+   Pr5.30    RS485 通信波特率设置      同上
+   Pr5.31    轴编号（站号）            1~31
+   Pr5.37    Modbus 连接设置 ⭐        0=MINAS标准,1=Modbus RS232,2=Modbus RS485
+   Pr5.38    Modbus 通信设置           0=Even/1bit,4=None/1bit
+   Pr5.39    Modbus 返回等待时间       0~10000 ms
+   Pr5.40    Modbus 通信超时时间       0~10000 ms
+   Pr5.42    Modbus 广播设置           bit 配置
+   Pr6.28    特殊功能选择 ⭐           0=Block无效,1=Modbus启动Block
 
-5. 状态监控寄存器（bit 信息）
+   ⚠️ 之前记录的 "Pr5.00=0003h 站号 / Pr5.01=0004h 通信速度" 为错误信息。
+   正确的参数编号来自 sx-zsv00015 文档。各 Pr 对应的寄存器地址需要查
+   完整 PDF（sx-zsv00015 第 39~55 页寄存器一览表），建议通过前面板修改。
 
-   PDF 第 50-55 页提供了状态寄存器的 bit 位定义，包括：
-   - 32 位状态寄存器（地址 0x0260-0x0261 等）
-   - 各 bit 含义：伺服使能状态、告警状态、定位完成、转矩限制中、速度到达等
-
-6. 计算公式
+4. 计算公式
 
    实际值 = 寄存器值 × 换算系数
 
    位置反馈：脉冲数（取决于电子齿轮比 Pr0.008/Pr0.009）
-   速度反馈：单位 r/min（具体换算系数需查主手册）
+   速度反馈：单位 r/min
    转矩反馈：单位 %（额定转矩百分比）
