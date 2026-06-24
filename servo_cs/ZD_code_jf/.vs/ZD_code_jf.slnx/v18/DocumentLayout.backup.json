@@ -26,8 +26,8 @@
               "Title": "MainWindow.xaml",
               "DocumentMoniker": "D:\\works\\ZHE_DIE\\servo_cs\\ZD_code_jf\\ZD_code_xm\\MainWindow.xaml",
               "RelativeDocumentMoniker": "ZD_code_xm\\MainWindow.xaml",
-              "ToolTip": "D:\\works\\ZHE_DIE\\servo_cs\\ZD_code_jf\\ZD_code_xm\\MainWindow.xaml",
-              "RelativeToolTip": "ZD_code_xm\\MainWindow.xaml",
+              "ToolTip": "D:\\works\\ZHE_DIE\\servo_cs\\ZD_code_jf\\ZD_code_xm\\MainWindow.xaml*",
+              "RelativeToolTip": "ZD_code_xm\\MainWindow.xaml*",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
               "WhenOpened": "2026-05-21T19:24:23.784Z",
               "EditorCaption": ""
@@ -40,9 +40,10 @@
               "RelativeDocumentMoniker": "ZD_code_xm\\MainWindow.xaml.cs",
               "ToolTip": "D:\\works\\ZHE_DIE\\servo_cs\\ZD_code_jf\\ZD_code_xm\\MainWindow.xaml.cs",
               "RelativeToolTip": "ZD_code_xm\\MainWindow.xaml.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAABUAAAAAAAAAAAAAABcAAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-21T19:24:23.151Z"
+              "WhenOpened": "2026-05-21T19:24:23.151Z",
+              "EditorCaption": ""
             }
           ]
         }
